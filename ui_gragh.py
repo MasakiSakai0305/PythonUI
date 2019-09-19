@@ -27,6 +27,7 @@ def _update(frame, x, y, data):
 
 #fig, ax = plt.subplots(2,1, figsize=(8,6))
 
+
 def Anime():
     fig = plt.figure(figsize=(10, 6))
     params = {
