@@ -95,13 +95,33 @@ def pause_plot():
         # ----> plt.pause(interval) これを使う!!! 引数はsleep時間
         plt.pause(.1)
 
+def plot():
+    path='resource/NG/12182700604BB524_NG.csv'
+    sen = pd.read_csv(path, index_col=0, encoding="shift-jis")
     
-    
+    sen = sen.rename(columns={'ﾁｯﾌﾟｽﾄﾛｰｸ量': 'Tip stroke', '射出速度': 'Injection speed',
+                                '鋳造圧力': 'Casting pressure', '真空度': 'Vacuum'})
+
+    fig, ax = plt.subplots(2,1, figsize=(10,6))
+    x = sen['時間']
+    for column in sen.columns[1:]:
+        y=sen[column]
+        ax[0].plot(x,y, label=column)
+        ax[0].legend(loc='best',
+            bbox_to_anchor=(0.95, 0.8, 0.2, .100), 
+            borderaxespad=0.,)
+    for column in sen.columns[2:]:
+        y=sen[column]
+        ax[1].plot(x,y, label=column)
+        ax[1].legend(loc='best',
+            bbox_to_anchor=(0.95, 0.8, 0.2, .100), 
+            borderaxespad=0.,)
+    plt.show()
 
 if __name__ == "__main__":
-    Anime()
+    #Anime()
     #pause_plot()
-
+    plot()
 
 
 

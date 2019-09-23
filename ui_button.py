@@ -1,69 +1,55 @@
-import tkinter
+import tkinter as tk
 import sys
-import ui_gragh as gragh
-from matplotlib.backends.backend_tkagg import (
-    FigureCanvasTkAgg, NavigationToolbar2Tk)
-import matplotlib.pyplot as plt
 from numpy.random import *
-import matplotlib.animation as an
-import numpy as np
+import time
 
+#Module import
+from PlotSensor import PlotSensor 
+from scroll import ScrollBar
+from PlotAnimation import Animation
 
 x1=[]
 y1=[]
 data=rand(100)
 
-def _quit():
-    root.quit()     # stops mainloop
-    root.destroy()  # this is necessary on Windows to prevent
-                    # Fatal Python Error: PyEval_RestoreThread: NULL tstate
+
+#close window
+def _quit(root):
+    root.quit()     
+    root.destroy()
 
 
-def _update(frame, x, y, data):
-    """グラフを更新するための関数"""
-    # 現在のグラフを消去する
-    plt.cla()
-    # データを更新 (追加) する
-    x.append(frame)
-    y.append(data[frame])
-
-    # 折れ線グラフを再描画する
-    #print(y)
-    #print(len(y))
-    plt.scatter(x, y)
-
-def Anime():
-    fig = plt.figure(figsize=(10, 6))
-    params = {
-        'fig': fig,
-        'func': _update,  # グラフを更新する関数
-        'fargs': (x1, y1, data),  # 関数の引数 (フレーム番号を除く)
-        'interval': 10,  # 更新間隔 (ミリ秒)
-        'frames': np.arange(0, 100, 1),  # フレーム番号を生成するイテレータ
-        'repeat': False,  # 繰り返さない
-    }
-    anime = an.FuncAnimation(**params)
-    fig.show()
-    plt.show()
+root=tk.Tk()
+root.title(u"EAP View Data")
+root.geometry("800x500")
 
 
-root=tkinter.Tk()
-root.title(u"Button")
-root.geometry("400x300")
-
-#canvas = FigureCanvasTkAgg(fig, master=root)
-#toolbar = NavigationToolbar2Tk(canvas, root)
-#canvas.get_tk_widget().pack()
-
-Button1 = tkinter.Button(text=u'show plot', master=root, command=Anime)
+#Show Animation
+an = Animation(x1, y1, data)
+Button1 = tk.Button(text=u'plot result', master=root, command=an.ani)
 Button1.pack()
 
-Button2 = tkinter.Button(text=u'Button2', master=root)
-Button2.pack()
 
-button = tkinter.Button(master=root, text="Quit", command=_quit)
-button.pack()
+#Plot Sensordata
+path = 'resource/NG/12182700604BB524_NG.csv'
+plot = PlotSensor(path)
+button_plot_sen = tk.Button(text=u'Plot Sensor', master=root, command=plot.Plot)
+button_plot_sen.pack()
+
+
+#Show ScrollBar
+data=[1,2,3]
+sc = ScrollBar()
+button_data = tk.Button(text=u'ScrollBar', master=root, command=lambda:sc.Scroll(data))
+button_data.pack()
+time.sleep(5)
+sc.data_add(4)
 
 
 
+#Quit
+button_quit = tk.Button(master=root, text="Quit", command=lambda:_quit(root))
+button_quit.pack()
 root.mainloop()
+
+
