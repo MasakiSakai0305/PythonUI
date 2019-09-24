@@ -32,6 +32,8 @@ class Animation():
 
     def ani(self):
         root = tk.Tk()
+        root.title(u"Plot result")
+
         fig = plt.figure(figsize=(10, 6))
         params = {
             'fig': fig,

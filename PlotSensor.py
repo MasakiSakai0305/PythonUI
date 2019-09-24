@@ -21,8 +21,10 @@ class PlotSensor():
     def Plot(self):
         root = tkinter.Tk()
         #path='resource/NG/12182700604BB524_NG.csv'
-        sen = pd.read_csv(self.path, index_col=0, encoding="shift-jis")
+        title = self.path.split('.')[0]
+        root.title(title)
         
+        sen = pd.read_csv(self.path, index_col=0, encoding="shift-jis")
         sen = sen.rename(columns={'ﾁｯﾌﾟｽﾄﾛｰｸ量': 'Tip stroke', '射出速度': 'Injection speed',
                                     '鋳造圧力': 'Casting pressure', '真空度': 'Vacuum'})
 
